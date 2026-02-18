@@ -1,0 +1,186 @@
+<div class="farmer-container">
+    
+    <!-- Header with Add Button (Only visible when list is shown) -->
+    <div class="header-actions" *ngIf="!showAddForm" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <mat-form-field appearance="outline" style="margin-bottom: -1.25em">
+            <mat-label>Filter Status</mat-label>
+            <mat-select [(ngModel)]="filterStatus" (selectionChange)="applyFilter()">
+                <mat-option value="active">Active</mat-option>
+                <mat-option value="inactive">Inactive</mat-option>
+                <mat-option value="all">All</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="toggleAddForm()">
+            <mat-icon>add</mat-icon> Add New Farmer
+        </button>
+    </div>
+
+    <!-- Add Farmer Form -->
+    <mat-card *ngIf="showAddForm">
+        <mat-card-header>
+            <mat-card-title>{{ isEditMode ? 'Edit Farmer details' : 'Add New Farmer' }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="farmerForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="firstName">
+                        <mat-error *ngIf="farmerForm.get('firstName')?.hasError('required')">First Name is
+                            required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName">
+                        <mat-error *ngIf="farmerForm.get('lastName')?.hasError('required')">Last Name is
+                            required</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput formControlName="mobileNumber">
+                        <mat-error *ngIf="farmerForm.get('mobileNumber')?.hasError('required')">
+                            Mobile Number is required
+                        </mat-error>
+                        <mat-error *ngIf="farmerForm.get('mobileNumber')?.hasError('pattern')">
+                            Invalid mobile number
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Village</mat-label>
+                        <input matInput formControlName="village" placeholder="Ex. Rampur">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Joined Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="joinedDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="farmerForm.get('joinedDate')?.hasError('required')">
+                            Joined Date is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="gender">
+                            <mat-option value="Male">Male</mat-option>
+                            <mat-option value="Female">Female</mat-option>
+                            <mat-option value="Other">Other</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="farmerForm.get('gender')?.hasError('required')">Gender is required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Aadhar Number</mat-label>
+                        <input matInput formControlName="aadharNumber" maxlength="12">
+                        <mat-error *ngIf="farmerForm.get('aadharNumber')?.hasError('required')">Aadhar Number is
+                            required</mat-error>
+                        <mat-error *ngIf="farmerForm.get('aadharNumber')?.hasError('pattern')">Must be 12
+                            digits</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Bank Account Number</mat-label>
+                        <input matInput formControlName="bankAccountNumber">
+                        <mat-error *ngIf="farmerForm.get('bankAccountNumber')?.hasError('required')">Bank Account is
+                            required</mat-error>
+                        <mat-error *ngIf="farmerForm.get('bankAccountNumber')?.hasError('pattern')">Invalid account
+                            number</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Secondary Bank Account (Optional)</mat-label>
+                        <input matInput formControlName="secondaryBankAccountNumber">
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-checkbox formControlName="isActive">Is Active</mat-checkbox>
+                </div>
+
+                <div class="actions" style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button mat-button type="button" (click)="toggleAddForm()">Cancel</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="farmerForm.invalid">{{ isEditMode ? 'Update Farmer' : 'Save Farmer' }}</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Farmer List -->
+    <mat-card class="list-card" *ngIf="!showAddForm">
+        <mat-card-header>
+            <mat-card-title>Registered Farmers</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <ng-container matColumnDef="farmerCode">
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.farmerCode}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef> First Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="mobileNumber">
+                    <th mat-header-cell *matHeaderCellDef> Mobile Number </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mobileNumber}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="village">
+                    <th mat-header-cell *matHeaderCellDef> Village </th>
+                    <td mat-cell *matCellDef="let element"> {{element.village}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="gender">
+                    <th mat-header-cell *matHeaderCellDef> Gender </th>
+                    <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="aadharNumber">
+                    <th mat-header-cell *matHeaderCellDef> Aadhar </th>
+                    <td mat-cell *matCellDef="let element"> {{element.aadharNumber}} </td>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="joinedDate">
+                    <th mat-header-cell *matHeaderCellDef> Joined Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.joinedDate?.seconds * 1000 | date}} </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="accent" (click)="editFarmer(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

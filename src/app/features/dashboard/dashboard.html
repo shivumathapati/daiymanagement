@@ -1,0 +1,123 @@
+
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        
+        <mat-form-field appearance="outline" style="width: 200px;">
+            <mat-label>Select Date</mat-label>
+            <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onDateChange($event)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+<div class="dashboard-container">
+    <!-- Overall Summary -->
+    <mat-card class="stat-card summary-card">
+        <mat-card-header>
+            <mat-card-title>Collection for {{ selectedDate | date:'mediumDate' }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="stat-row main-stat">
+                <span class="label">Total Milk</span>
+                <span class="value">{{ todayMilkTotal | number:'1.0-2' }} Ltr</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Active Farmers</span>
+                <span class="value">{{ activeFarmersCount }}</span>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Buffalo Stats -->
+    <mat-card class="stat-card buffalo-card">
+        <mat-card-header>
+            <mat-card-title>Buffalo Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="stat-row">
+                <span class="label">Total Milk</span>
+                <span class="value">{{ buffaloMilkQuantity | number:'1.0-2' }} Ltr</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Farmers</span>
+                <span class="value">{{ buffaloFarmerCount }}</span>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Cow Stats -->
+    <mat-card class="stat-card cow-card">
+        <mat-card-header>
+            <mat-card-title>Cow Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="stat-row">
+                <span class="label">Total Milk</span>
+                <span class="value">{{ cowMilkQuantity | number:'1.0-2' }} Ltr</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Farmers</span>
+                <span class="value">{{ cowFarmerCount }}</span>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h3>Collection Details</h3>
+        <div class="filters">
+            <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Filter by Milk Type</mat-label>
+                <mat-select [(ngModel)]="selectedMilkType" (selectionChange)="applyFilter()">
+                    <mat-option value="All">All</mat-option>
+                    <mat-option value="Cow">Cow</mat-option>
+                    <mat-option value="Buffalo">Buffalo</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Filter by Shift</mat-label>
+                <mat-select [(ngModel)]="selectedShift" (selectionChange)="applyFilter()">
+                    <mat-option value="All">All</mat-option>
+                    <mat-option value="AM">Morning (AM)</mat-option>
+                    <mat-option value="PM">Evening (PM)</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <table mat-table [dataSource]="filteredRecords" class="mat-elevation-z8">
+
+        <!-- Code Column -->
+        <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef> Code </th>
+            <td mat-cell *matCellDef="let record"> {{ getFarmerCode(record.farmerId) }} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let record"> {{record.farmerName}} </td>
+        </ng-container>
+
+        <!-- Fat Column -->
+        <ng-container matColumnDef="fat">
+            <th mat-header-cell *matHeaderCellDef> Fat </th>
+            <td mat-cell *matCellDef="let record"> {{record.fat}} </td>
+        </ng-container>
+
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef> Quantity </th>
+            <td mat-cell *matCellDef="let record"> {{record.quantity}} </td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef> Total Amount </th>
+            <td mat-cell *matCellDef="let record"> ₹{{record.totalAmount}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

@@ -1,0 +1,94 @@
+.settings-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.settings-card {
+    width: 100%;
+}
+
+/* Inner Tab Padding */
+.inner-tab-content {
+    padding: 24px 0 0 0;
+}
+
+/* Form Styles */
+.form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.form-row mat-form-field {
+    flex: 1;
+    min-width: 200px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* User Management Styles */
+.user-management-header {
+    margin-bottom: 20px;
+}
+
+.user-management-header h3 {
+    margin: 0;
+    color: #666;
+    font-weight: 400;
+}
+
+.search-field {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.table-container {
+    overflow-x: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+}
+
+.dense-form-field {
+    width: 140px;
+    font-size: 13px;
+}
+
+/* Role Badges */
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+.role-badge.admin {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.role-badge.operator {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.role-badge.farmer {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+/* Material overrides */
+::ng-deep .dense-form-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}

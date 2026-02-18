@@ -1,0 +1,52 @@
+<div class="notice-container">
+    <div class="header" *ngIf="showHeader">
+        <h3>Notices</h3>
+    </div>
+
+    <!-- Add Notice Form: Visible to Admin or Operator, AND NOT readonly -->
+    <mat-card class="add-notice-card" *ngIf="!readonly && canAddNotice()">
+        <mat-card-header>
+            <mat-card-title>Create New Notice</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Message</mat-label>
+                    <textarea matInput [(ngModel)]="newMessage" placeholder="Enter notice message..." rows="2"></textarea>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="newDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="addNotice()" [disabled]="!newMessage">
+                    Post Notice
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Notice List -->
+    <div class="notice-list">
+        <mat-card class="notice-item" *ngFor="let notice of notices$ | async">
+            <div class="notice-content">
+                <div class="notice-date">
+                    <mat-icon color="primary">event</mat-icon>
+                    <span>{{ notice.date | date:'mediumDate' }}</span>
+                </div>
+                <p class="notice-message">{{ notice.message }}</p>
+                
+                <button mat-icon-button color="warn" *ngIf="!readonly && canDelete()" (click)="deleteNotice(notice.id!)" class="delete-btn">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </mat-card>
+        
+        <div *ngIf="(notices$ | async)?.length === 0" class="no-notices">
+            <p>No notices at this time.</p>
+        </div>
+    </div>
+</div>

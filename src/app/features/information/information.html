@@ -1,0 +1,47 @@
+<div style="padding: 20px;">
+    <button mat-raised-button color="primary" (click)="toggleRateList()">
+        Milk Prize Rate
+    </button>
+</div>
+
+<div class="table-container rate-chart-container" *ngIf="isRateListVisible">
+    <div class="table-header">
+        <h3>Milk Rate Chart</h3>
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Filter by Type</mat-label>
+            <mat-select [(ngModel)]="selectedRateType" (selectionChange)="updateRateColumns()">
+                <mat-option value="Cow">Cow</mat-option>
+                <mat-option value="Buffalo">Buffalo</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <table mat-table [dataSource]="rateChartData" class="mat-elevation-z8">
+        <!-- Fat Column -->
+        <ng-container matColumnDef="fat">
+            <th mat-header-cell *matHeaderCellDef> Fat </th>
+            <td mat-cell *matCellDef="let element"> {{element.fat}} </td>
+        </ng-container>
+
+        <!-- Cow Price Column -->
+        <ng-container matColumnDef="cowPrice">
+            <th mat-header-cell *matHeaderCellDef> Cow Rate (₹) </th>
+            <td mat-cell *matCellDef="let element"> {{element.cowPrice}} </td>
+        </ng-container>
+
+        <!-- Buffalo Price Column -->
+        <ng-container matColumnDef="buffaloPrice">
+            <th mat-header-cell *matHeaderCellDef> Buffalo Rate (₹) </th>
+            <td mat-cell *matCellDef="let element"> {{element.buffaloPrice}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedRateColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedRateColumns;"></tr>
+    </table>
+</div>
+
+<div class="notification-area">
+    <h3><mat-icon style="vertical-align: middle; margin-right: 8px;">notifications_active</mat-icon> Important Notifications</h3>
+    <app-notice [readonly]="true" [showHeader]="false"></app-notice>
+</div>
+

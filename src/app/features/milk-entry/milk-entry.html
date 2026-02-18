@@ -1,0 +1,89 @@
+<div class="entry-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Daily Milk Collection</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="entryForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Shift</mat-label>
+                        <mat-select formControlName="shift">
+                            <mat-option value="AM">Morning (AM)</mat-option>
+                            <mat-option value="PM">Evening (PM)</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Milk Type</mat-label>
+                        <mat-select #milkTypeSelect formControlName="milkType"
+                            (selectionChange)="farmerCodeInput.focus()"
+                            (keydown.enter)="onMilkTypeEnter(milkTypeSelect, farmerCodeInput)">
+                            <mat-option value="buffalo">Buffalo</mat-option>
+                            <mat-option value="cow">Cow</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Farmer Code</mat-label>
+                        <input #farmerCodeInput (keydown.enter)="$event.preventDefault(); onFarmerCodeEnter(fatInput)"
+                            matInput [formControl]="farmerCodeControl" placeholder="Enter Farmer ID">
+                        <mat-error *ngIf="farmerCodeControl.hasError('required')">
+                            Farmer Code is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                @if(selectedFarmer){
+
+                <div class="farmer-details">
+                    <h3>Farmer: {{selectedFarmer.firstName}} {{selectedFarmer.lastName}}</h3>
+                </div>
+                }
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Fat</mat-label>
+                        <input #fatInput matInput type="number" formControlName="fat"
+                            (keydown.enter)="$event.preventDefault(); quantityInput.focus()">
+                    </mat-form-field>
+
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Quantity (Ltr)</mat-label>
+                        <input #quantityInput matInput type="number" formControlName="quantity"
+                            (keydown.enter)="$event.preventDefault(); onSubmit()">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Rate</mat-label>
+                        <input matInput type="number" formControlName="rate">
+                        <span matPrefix>₹&nbsp;</span>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Total Amount</mat-label>
+                        <input matInput type="number" formControlName="totalAmount">
+                        <span matPrefix>₹&nbsp;</span>
+                    </mat-form-field>
+                </div>
+
+                <div class="actions">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="entryForm.invalid">Save
+                        Entry</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

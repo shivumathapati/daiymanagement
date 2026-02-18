@@ -1,0 +1,47 @@
+.sidenav-container {
+    height: 100%;
+    
+}
+
+.sidenav {
+    background-color: blanchedalmond;
+    width: 200px;
+}
+
+.content-container {
+    padding: 20px;
+}
+
+mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.active-link {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}

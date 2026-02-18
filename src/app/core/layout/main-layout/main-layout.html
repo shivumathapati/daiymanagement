@@ -1,0 +1,83 @@
+<mat-sidenav-container class="sidenav-container">
+    <button (click)="drawer.open()">open</button>
+    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <mat-toolbar>Menu</mat-toolbar>
+        <mat-nav-list>
+
+            <a mat-list-item routerLink="/dashboard">
+                <mat-icon>dashboard</mat-icon>
+                <span>Dashboard</span>
+            </a>
+            
+            <a mat-list-item routerLink="/information">
+                <mat-icon>info</mat-icon>
+                <span>Information</span>
+            </a>
+            <a mat-list-item routerLink="/product">
+                <mat-icon>inventory_2</mat-icon>
+                <span>Product</span>
+            </a>
+
+            @if(isoperator() || isAdmin()) {
+            <a mat-list-item routerLink="/farmers">
+                <mat-icon>people</mat-icon>
+                <span>Farmers</span>
+            </a>
+            <a mat-list-item routerLink="/milk-entry">
+                <mat-icon>water_drop</mat-icon>
+                <span>Milk Entry</span>
+            </a>}
+
+            <a mat-list-item routerLink="/reports">
+                <mat-icon>assessment</mat-icon>
+                <span>Reports</span>
+            </a>
+              <a mat-list-item routerLink="/notices">
+                <mat-icon>notifications</mat-icon>
+                <span>Notices</span>
+            </a>
+
+            @if (isAdmin()) {
+            <a mat-list-item routerLink="/settings">
+                <mat-icon>settings</mat-icon>
+                <span>Settings</span>
+            </a>
+
+            }
+            <mat-divider></mat-divider>
+            <a mat-list-item (click)="logout(); drawer.close()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            @if(isHandset$ | async){
+
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+            }
+            @else {
+            <span class="app-title">Dairy Management</span>
+            <span class="spacer"></span>
+
+            <div class="nav-links">
+                <!-- <a mat-button routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
+                <a mat-button routerLink="/farmers" routerLinkActive="active-link">Farmers</a>
+                <a mat-button routerLink="/milk-entry" routerLinkActive="active-link">Milk Entry</a>
+                <a mat-button routerLink="/reports" routerLinkActive="active-link">Reports</a>
+                <a mat-button routerLink="/settings" routerLinkActive="active-link">Settings</a> -->
+                <button mat-icon-button (click)="logout()" title="Logout">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </div>
+            }
+        </mat-toolbar>
+        <div class="content-container">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

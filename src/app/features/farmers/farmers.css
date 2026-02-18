@@ -1,0 +1,33 @@
+.farmer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+mat-card {
+    padding: 30px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.form-row mat-form-field {
+    flex: 1;
+    min-width: 200px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.list-card {
+    margin-top: 24px;
+}
+
+table {
+    width: 100%;
+}

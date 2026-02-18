@@ -1,0 +1,139 @@
+<div class="settings-container">
+    <mat-card class="settings-card">
+        <mat-card-header>
+            <mat-card-title>Admin Settings</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-tab-group>
+                <!-- TAB 1: Milk Rate Settings -->
+                <mat-tab label="Milk Configuration">
+                    <div class="inner-tab-content">
+                        <mat-tab-group>
+                            <mat-tab label="Buffalo">
+                                <form [formGroup]="buffaloForm" (ngSubmit)="saveSettings(buffaloForm, 'Buffalo')">
+                                    <div class="form-row">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Min Fat</mat-label>
+                                            <input matInput type="number" formControlName="minFat">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Max Fat</mat-label>
+                                            <input matInput type="number" formControlName="maxFat">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-row">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Min Price</mat-label>
+                                            <input matInput type="number" formControlName="minPrice">
+                                            <span matPrefix>₹&nbsp;</span>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Max Price</mat-label>
+                                            <input matInput type="number" formControlName="maxPrice">
+                                            <span matPrefix>₹&nbsp;</span>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="actions">
+                                        <button mat-raised-button color="primary" type="submit"
+                                            [disabled]="buffaloForm.invalid">Save Buffalo Settings</button>
+                                    </div>
+                                </form>
+                            </mat-tab>
+
+                            <mat-tab label="Cow">
+                                <form [formGroup]="cowForm" (ngSubmit)="saveSettings(cowForm, 'Cow')">
+                                    <div class="form-row">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Min Fat</mat-label>
+                                            <input matInput type="number" formControlName="minFat">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Max Fat</mat-label>
+                                            <input matInput type="number" formControlName="maxFat">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-row">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Min Price</mat-label>
+                                            <input matInput type="number" formControlName="minPrice">
+                                            <span matPrefix>₹&nbsp;</span>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Max Price</mat-label>
+                                            <input matInput type="number" formControlName="maxPrice">
+                                            <span matPrefix>₹&nbsp;</span>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="actions">
+                                        <button mat-raised-button color="primary" type="submit"
+                                            [disabled]="cowForm.invalid">Save Cow Settings</button>
+                                    </div>
+                                </form>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </mat-tab>
+
+                <!-- TAB 2: User Management -->
+                <mat-tab label="User Management">
+                    <div class="inner-tab-content">
+                        <div class="user-management-header">
+                            <h3>Manage users and assign roles</h3>
+                        </div>
+
+                        <mat-form-field appearance="outline" class="full-width search-field">
+                            <mat-label>Search Users</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. John Doe or email" #input>
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+
+                        <div class="table-container">
+                            <table mat-table [dataSource]="dataSource" matSort>
+
+                                <!-- Email Column -->
+                                <ng-container matColumnDef="email">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                                </ng-container>
+
+                                <!-- Role Column -->
+                                <ng-container matColumnDef="role">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <span class="role-badge" [class]="row.role">{{row.role}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Actions Column -->
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef> Assign Role </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <mat-form-field appearance="outline" class="dense-form-field">
+                                            <mat-select [value]="row.role"
+                                                (selectionChange)="updateRole(row, $event.value)">
+                                                <mat-option *ngFor="let role of availableRoles" [value]="role">
+                                                    {{role | titlecase}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                                <!-- Row shown when there is no matching data. -->
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="3">No data matching the filter "{{input.value}}"</td>
+                                </tr>
+                            </table>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                                aria-label="Select page of users"></mat-paginator>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
+</div>
