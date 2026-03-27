@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -23,6 +24,7 @@ export class Settings implements OnInit {
   private settingsService = inject(SettingsService);
   private snackBar = inject(MatSnackBar);
   private firestore = inject(Firestore);
+  private userService = inject(UserService);
 
   // Milk Rate Forms
   cowForm: FormGroup = this.createForm('cow');
@@ -78,14 +80,8 @@ export class Settings implements OnInit {
   // --- User Master Logic ---
 
   loadUsers() {
-    const usersCollection = collection(this.firestore, 'users');
-    collectionData(usersCollection, { idField: 'uid' }).subscribe((users: any[]) => {
+    this.userService.getAllUsers().subscribe((users: User[]) => {
       this.dataSource = new MatTableDataSource(users);
-      // We need to set paginator/sort after view init or when data arrives
-      // However, since they are inside a tab, they might not be available immediately if tab is hidden
-      // We'll rely on the user switching tabs or use a setter if needed, but simple assignment works often if alive.
-      // Better approach for tabs: set them when available or use setters. 
-      // For now, assigning here. If issues arise with tabs, we'll fix.
       setTimeout(() => {
           if (this.paginator) this.dataSource.paginator = this.paginator;
           if (this.sort) this.dataSource.sort = this.sort;
@@ -106,8 +102,7 @@ export class Settings implements OnInit {
   async updateRole(user: User, newRole: string) {
     if (!user.uid) return;
     try {
-        const userRef = doc(this.firestore, `users/${user.uid}`);
-        await updateDoc(userRef, { role: newRole });
+        await this.userService.updateUser(user.uid, { role: newRole as any });
         this.snackBar.open(`Role updated to ${newRole} for ${user.email}`, 'Close', { duration: 3000 });
     } catch (error) {
         console.error('Error updating role:', error);

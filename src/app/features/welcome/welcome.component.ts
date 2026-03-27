@@ -2,14 +2,14 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../shared/material.module';
 import { AuthService } from '../../core/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-welcome',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, CommonModule],
+  imports: [ReactiveFormsModule, MaterialModule, CommonModule, RouterModule],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css'],
 })
@@ -41,6 +41,10 @@ export class WelcomeComponent {
 
   togglePanel() {
     this.isRightPanelActive = !this.isRightPanelActive;
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/']);
   }
 
   onLogin() {

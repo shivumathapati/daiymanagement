@@ -1,0 +1,63 @@
+<div class="home-wrapper">
+  <!-- Dynamic Header -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <div class="brand">
+        <mat-icon color="primary">grass</mat-icon>
+        <span class="logo-text">DairyManager</span>
+      </div>
+      <nav class="nav-links">
+        <button mat-button (click)="scrollToInfo()">Information</button>
+        <a mat-button routerLink="/dashboard" *ngIf="isLoggedIn()">Go to App</a>
+        <button mat-flat-button color="primary" *ngIf="!isLoggedIn()" (click)="navigateToLogin()">
+          Login / Sign Up
+        </button>
+        <button mat-icon-button *ngIf="isLoggedIn()" (click)="navigateToDashboard()" title="Dashboard">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section with Full Background -->
+  <section class="hero-section full-bg">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="welcome-prefix">Welcome to the future of dairy</span>
+      <h1 class="hero-title">Modern Dairy <span class="accent">Management</span> Platform</h1>
+      <p class="hero-subtitle">Optimize your daily collections, track farmer performance, and manage your dairy business with ease and precision.</p>
+      
+      <div class="cta-group">
+        <button mat-raised-button color="primary" class="hero-btn" (click)="navigateToLogin()" *ngIf="!isLoggedIn()">
+          Get Started Now <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" class="hero-btn secondary" (click)="navigateToDashboard()" *ngIf="isLoggedIn()">
+          Go to Dashboard <mat-icon>dashboard</mat-icon>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features-section" id="info-section">
+    <div class="section-header">
+        <span class="badge">Features</span>
+        <h2>Everything you need to grow</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="icon-box">
+          <mat-icon>{{ feature.icon }}</mat-icon>
+        </div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 DairyManager Pro. All rights reserved.</p>
+  </footer>
+</div>

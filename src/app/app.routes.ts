@@ -13,15 +13,18 @@ import { Product } from './features/product/product';
 import { NoticeComponent } from './features/notice/notice.component';
 
 import { WelcomeComponent } from './features/welcome/welcome.component';
+import { HomeComponent } from './features/home/home';
 
 export const routes: Routes = [
     // Public Routes (No Layout)
+    { path: '', component: HomeComponent },
+    { path: 'home', component: HomeComponent },
     { path: 'login', component: WelcomeComponent },
     { path: 'signup', component: WelcomeComponent },
 
     // Protected Routes (With Layout)
     {
-        path: '',
+        path: 'app',
         component: MainLayout,
         canActivate: [authGuard],
         children: [
@@ -38,5 +41,15 @@ export const routes: Routes = [
         ]
     },
 
-    { path: '**', redirectTo: 'dashboard' }
+    // Compatiblity layer/Redirects
+    { path: 'dashboard', redirectTo: 'app/dashboard', pathMatch: 'full' },
+    { path: 'farmers', redirectTo: 'app/farmers', pathMatch: 'full' },
+    { path: 'milk-entry', redirectTo: 'app/milk-entry', pathMatch: 'full' },
+    { path: 'reports', redirectTo: 'app/reports', pathMatch: 'full' },
+    { path: 'settings', redirectTo: 'app/settings', pathMatch: 'full' },
+    { path: 'notices', redirectTo: 'app/notices', pathMatch: 'full' },
+    { path: 'information', redirectTo: 'app/information', pathMatch: 'full' },
+    { path: 'product', redirectTo: 'app/product', pathMatch: 'full' },
+
+    { path: '**', redirectTo: '' }
 ];

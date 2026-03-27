@@ -12,6 +12,30 @@
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
 	margin: -20px 0 50px;
+	position: relative; /* For absolute positioning of back button */
+}
+
+.back-home-btn {
+	position: absolute;
+	top: 24px;
+	left: 24px;
+	z-index: 110; /* Above overlay */
+	padding: 8px 16px !important;
+	border-radius: 99px !important;
+	background: rgba(255, 255, 255, 0.9) !important;
+	color: #3f51b5 !important;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	border: none !important;
+	transition: all 0.3s ease !important;
+}
+
+.back-home-btn:hover {
+	background: #3f51b5 !important;
+	color: white !important;
+	transform: translateX(-4px);
 }
 
 h1 {
